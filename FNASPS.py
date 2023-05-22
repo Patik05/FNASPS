@@ -43,8 +43,9 @@ Sp = pygame.image.load('MainMenu/sipecka.png')
 Tx = pygame.image.load('MainMenu/text.png')
 Tx1 = pygame.image.load('MainMenu/text1.png')
 Tx2 = pygame.image.load('MainMenu/text2.png')
-
+KLKM = pygame.image.load('MainMenu/Spsmap.png')
 Ikonka = pygame.image.load('MainMenu/icon.png')
+#screen.blit(pygame.transform.scale(pic, (500, 500)), (0, 0))
 # ----------------------------------- #
 OknoSirka = 1680
 OknoVyska = 1000
@@ -54,6 +55,9 @@ screen = pygame.display.set_mode(Okno_velikost,0,32)
 display = pygame.Surface((300,200)) 
 
 pygame.display.set_icon(Ikonka)
+
+KameStat = pygame.image.load('MainMenu/static.gif')
+KameStat = pygame.transform.scale(KameStat, (OknoSirka, OknoVyska))
 
 Pocatek = pygame.time.get_ticks()
 CasPozadi = 0
@@ -174,28 +178,32 @@ while True:
         dX = 0
         #Kamera delay
         Mediator = 0
+        PrepMaediator = 0
         #Světla
         BoolLL = False
         BoolRL = False
         BoolLD = False
         BoolRD = False
         klik = False
+        
+        BoolSWKamera = False
         #Logika rozmístění a přepínání kamer
         #xList = [(200,10), (240,40), (100, 80), (140,160), (300,120), (120,210), (180,240), (180,270), (260,240), (260,270), (310, 190)]
-        MPoz = OknoVyska - 520 #530
-        xList = [(300,MPoz+10), "MD", (380,MPoz + 30), "MH", (140, MPoz + 100), "2A", (180,700), "T5", (510,MPoz + 80), "T15", (160,MPoz + 160), "T2", (260,MPoz + 300), "HW1B", (260,MPoz +250), "HW1A", (360,MPoz + 300), "HW2B", (360,MPoz + 250), "HW2A", (510, MPoz + 180), "T16"]
+        MPoz = OknoVyska - 540 #530
+        xList = [(540,MPoz), "ŘE", (440,MPoz + 120), "SCHO", (160, MPoz + 140), "HW1B", (200,MPoz), "KAB", (540,MPoz + 80), "SEK1", (340,MPoz + 140), "HW1A", (80,MPoz + 280), "T17B", (210,MPoz +280), "T17A", (360,MPoz + 280), "T16", (410,MPoz + 370), "T15", (490, MPoz + 270), "SEK2"]#MainDoor MainHallway
+        
         #MpKm = ([100, OknoVyska - 500, 500, 400])
         KmList = KmFnce()
         j = 0
         op = 0
         KmLt, tett = KmFnce()
         kamka = 0
-        #Procenta
-        #Taky si říkám
         
         BoolKm = False
         running = True
         while running:
+            #Procenta
+            #Taky si říkám
             Proc = 100
             TxProc = str(Proc) + "%"
             rect = Rect(mx, my, 1, 1)
@@ -254,18 +262,22 @@ while True:
                     SvetloR = pygame.draw.rect(screen, (255,255,255), [dX + OknoSirka - 300, 200, 200, 600], 0)        
             # -------- Na kameře -------- #
             else:
-                MpKm = pygame.draw.rect(screen, (255,255,255), [100, MPoz, 500, 400], 2)
-                #Km = pygame.draw.rect(screen, (255,255,255), [100, OknoVyska - 800, 100, 50], 2)
-                #tett
-                #KmLt
+                
+                if (Vteriny - PrepMaediator) < 0.5:
+                    screen.blit(KameStat, (0,0))
+
+                screen.blit(KLKM, (100,MPoz))                
                 for r in KmLt:
-                    if kamka == KmLt.index(r):
-                        pygame.draw.rect(screen, (140,140,140), r, 0)
-                    if rect.colliderect(r) and klik:
-                        pygame.draw.rect(screen, (255,0,0), r, 5)
+                    if rect.colliderect(r) and klik and BoolSWKamera == False:
                         kamka = KmLt.index(r)
+                        PrepMaediator = Vteriny
+                    elif kamka == KmLt.index(r):
+                        pygame.draw.rect(screen, (140,140,140), r, 0)
+                        pygame.draw.rect(screen, (150,200,255), r, 5)
                     else:
-                        pygame.draw.rect(screen, (255,255,255), r, 3)
+                        #pygame.draw.rect(screen, (20,20,20), r, 0)
+                        pygame.draw.rect(screen, (10,10,10), r, 0)
+                        pygame.draw.rect(screen, (150,200,255), r, 5)
                 
                 for t in tett:
                     if tett.index(t) % 2 == 0:
@@ -279,6 +291,8 @@ while True:
                         textik(o, mensi_text_font, (255,255,255), l[0]+5, l[1]+8)
                     #print(Vteriny - Mediator)
                     
+                #screen.blit(KameStat, (0,0))
+                
                     
             # ------- Delay pro kameru -------- #
             if klik and (Vteriny - Mediator) > 0.4:
