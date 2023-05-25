@@ -1,5 +1,4 @@
-import sys, pygame, os, random, time
-import math
+import sys, pygame, os, random, time, math, anima as e
 from pygame import *
 
 def terminace():
@@ -23,6 +22,9 @@ def KmFnce():
             r = t
             tett.append(r)
     return KmLt, tett
+
+def flip(img,boolean=True):
+    return pygame.transform.flip(img,boolean,False)
 
 hodiny = pygame.time.Clock()
 pygame.init()
@@ -67,7 +69,7 @@ KameStat = pygame.image.load('MainMenu/static.gif')
 KameStat = pygame.transform.scale(KameStat, (OknoSirka, OknoVyska))
 
 #Kolikátá noc
-PNoc = 1
+PNoc = 0
 #Pro správné počítaní délky noci
 rozdil = 0
 
@@ -98,7 +100,8 @@ while True:
             bg_ano = True
             bg_timer = pygame.event.custom_type()
             screen.fill((0,0,0))
-            
+
+
             #Důvody epilepsie
             if Vteriny % 2 > 0.05 :
                 Sq = St1
@@ -144,8 +147,8 @@ while True:
                         if stage_sipecky == 0:
                             stage_sipecky = 1
                         else:
-                            stage_sipecky = 0                      
-                    
+                            stage_sipecky = 0                       
+            
             screen.blit(Sn, (OknoSirka / 2,0))
             screen.blit(Sw, (0,0))
             screen.blit(Sq, (0,0))
@@ -169,18 +172,30 @@ while True:
 
     # -------- Noviny na začítku hry -------- #
     if IntermiseBool:
-        if PNoc == 1:
+        if PNoc == 0:
+            rozdil = pygame.time.get_ticks() / 1000
+            alpha = 0
+            klik = False
             running = True
             while running:
+                #Průhlednost
+                alpha = round((pygame.time.get_ticks() / 8) - rozdil)
+                if alpha < 256:
+                    Novi.set_alpha(alpha)
                 screen.fill((0,0,0))
                 screen.blit(Novi, (0,0))
                 screen.blit(Et, (OknoSirka - 250, OknoVyska - 150))
+                if klik:
+                    GameBool = True
+                    IntermiseBool = False
+                    running = False
+                    PNoc = 1
                 for event in pygame.event.get():
                     if event.type == QUIT:
                         terminace()
-                    #if event.type == MOUSEBUTTONDOWN:
-                     #   if event.button == 1:
-                      #      klik = True
+                    if event.type == MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            klik = True
                     elif event.type == pygame.KEYDOWN:
                         if event.key == K_ESCAPE:
                             terminace()
@@ -188,7 +203,8 @@ while True:
                             #Zatím to samé
                             IntermiseBool = False
                             GameBool = True
-                            running = False                                
+                            running = False
+                            PNoc = 1
 
                 pygame.display.update()
                 hodiny.tick(60)
@@ -213,6 +229,10 @@ while True:
         BoolPG = True
         klik = False
         
+        #Bude vráceno animatroniky
+        GameOver = False
+        Win = False
+        
         BoolSWKamera = False
         #Logika rozmístění a přepínání kamer
         MPoz = OknoVyska - 540 #530
@@ -224,17 +244,31 @@ while True:
         BoolKm = False
         running = True
         kameY = 0
+        Rano = 12
+        #Procenta
+        Proc = 100
+        balding = e.animatronik( 11, 11, 8000,True ,)
+        hugerCat = e.animatronik(11, 11, 8000,False,)
+        flaska = e.animatronik(  11, 11, 8000,False,)
+        zakar = e.animatronik(   11, 11, 8000,False,)
         while running:
-            #Procenta
-            #Taky si říkám
-            Proc = 100
-            Rano = 12
+            #print(brian.pozice)
+
+   
             rect = Rect(mx, my, 1, 1)
             mx, my = pygame.mouse.get_pos()
             screen.fill((0,0,0))
             Vteriny = round((pygame.time.get_ticks() / 1000) - rozdil)
             strtVteriny = Vteriny - 60 * Minu
             
+            Rano = Vteriny // 45
+            if Rano < 1:
+                Rano = 12
+            elif Rano >= 6:
+                Win = True
+                running = False
+                GameBool = False
+
             if strtVteriny < 10:
                 xt = "0"
             elif strtVteriny >= 60:
@@ -366,4 +400,38 @@ while True:
             pygame.display.update()
             hodiny.tick(60)
         
+    # -------- Noviny na začítku hry -------- #
+    if Win:
+        klik = False
+        PNoc += 1
+        running = True
+        while running:
+            #Průhlednost
+            screen.fill((0,0,0))
+            textik("6 AM!!!!!!!!!!!!!!!", vetsi_text_font, (255,255,255), OknoSirka/2 - 200, OknoVyska /2)
+            if klik:
+                GameBool = True
+                Win = False
+                running = False
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    terminace()
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        klik = True
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        terminace()
+                    if event.key == pygame.K_RETURN:
+                        #Zatím to samé
+                        Win = False
+                        GameBool = True
+                        running = False
+                        PNoc = 1
+
+                pygame.display.update()
+                hodiny.tick(60)
+        else:
+            IntermiseBool = False
+            GameBool = True 
     screen.blit(pygame.transform.scale(display,Okno_velikost),(0,0))
