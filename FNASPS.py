@@ -53,6 +53,25 @@ Et = pygame.image.load('MainMenu/entr.png')
 
 OF = pygame.image.load('MainMenu/G1.png')
 
+Ckamka0 = pygame.image.load('MainMenu/K0.png')
+Ckamka1 = pygame.image.load('MainMenu/K1.png')
+Ckamka2 = pygame.image.load('MainMenu/K2.png')
+Ckamka3 = pygame.image.load('MainMenu/K3.png')
+Ckamka4 = pygame.image.load('MainMenu/G1.png')
+Ckamka5 = pygame.image.load('MainMenu/G1.png')
+Ckamka6 = pygame.image.load('MainMenu/G1.png')
+Ckamka7 = pygame.image.load('MainMenu/G1.png')
+Ckamka8 = pygame.image.load('MainMenu/G1.png')
+Ckamka9 = pygame.image.load('MainMenu/G1.png')
+Ckamka10 = pygame.image.load('MainMenu/G1.png')
+Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9,Ckamka10]
+
+Br9 = pygame.image.load('MainMenu/pg.png')
+Br5 = pygame.image.load('MainMenu/pg.png')
+Br8 = pygame.image.load('MainMenu/pg.png')
+Br7 = pygame.image.load('MainMenu/pg.png')
+Br6 = pygame.image.load('MainMenu/pg.png')
+
 BtKm = pygame.image.load('MainMenu/KmBt.png')
 #screen.blit(pygame.transform.scale(pic, (500, 500)), (0, 0))
 # ----------------------------------- #
@@ -78,7 +97,9 @@ dolu = False
 MenuBool = True
 IntermiseBool = False
 GameBool = False
-
+#Bude vráceno animatroniky
+GameOver = False
+Win = False
 sipecky_X = 120
 sipecky_Y = 630
 
@@ -100,7 +121,6 @@ while True:
             bg_ano = True
             bg_timer = pygame.event.custom_type()
             screen.fill((0,0,0))
-
 
             #Důvody epilepsie
             if Vteriny % 2 > 0.05 :
@@ -228,10 +248,7 @@ while True:
         BoolRD = False
         BoolPG = True
         klik = False
-        
-        #Bude vráceno animatroniky
-        GameOver = False
-        Win = False
+    
         
         BoolSWKamera = False
         #Logika rozmístění a přepínání kamer
@@ -247,14 +264,17 @@ while True:
         Rano = 12
         #Procenta
         Proc = 100
-        balding = e.animatronik( 11, 11, 8000,True ,)
-        hugerCat = e.animatronik(11, 11, 8000,False,)
-        flaska = e.animatronik(  11, 11, 8000,False,)
-        zakar = e.animatronik(   11, 11, 8000,False,)
+        #9 5 8 7 6
+        balding = e.animatronik([9,5,8,7,6,0])
+        bald = 0
+        #hugerCat = e.animatronik(11, 11, 8000,False,)
+        #flaska = e.animatronik(  11, 11, 8000,False,)
+        #zakar = e.animatronik(   11, 11, 8000,False,)
         while running:
-            #print(brian.pozice)
-
-   
+            if GameOver:
+                Win = True
+                running = False
+                GameBool = False
             rect = Rect(mx, my, 1, 1)
             mx, my = pygame.mouse.get_pos()
             screen.fill((0,0,0))
@@ -301,35 +321,33 @@ while True:
                 #Dalo by se dát and místo více if, né když stačí ale ověřit jednu proměnnou
                 if klik:
                     if LL.collidepoint((mx, my)):
-                        if not BoolLL:
-                            BoolLL = True
-                        else:
-                            BoolLL = False
+                        BoolLL = not BoolLL
                     elif RL.collidepoint((mx, my)):
-                        if not BoolRL:
-                            BoolRL = True
-                        else:
-                            BoolRL = False
+                        BoolRL = not BoolRL
                     elif LD.collidepoint((mx,my)):
-                        if not BoolLD:
-                            BoolLD = True
-                        else:
-                            BoolLD = False
+                        BoolLD = not BoolLD
                     elif RD.collidepoint((mx,my)):
-                        if not BoolRD:
-                            BoolRD = True
-                        else:
-                            BoolRD = False
+                        BoolRD = not BoolRD
                 
                 if BoolLL == True:
                     SvetloL = pygame.draw.rect(screen, (255,255,255), [dX + 100, 200, 200, 600], 0)
+                if BoolLD == True:
+                    DoorL = pygame.draw.rect(screen, (255,0,0), [dX + 100, 200, 200, 600], 0)
                 if BoolRL == True:
                     SvetloR = pygame.draw.rect(screen, (255,255,255), [dX + OknoSirka - 250, 200, 200, 600], 0)
+                if BoolRD == True:
+                    DoorR = pygame.draw.rect(screen, (255,0,0), [dX + OknoSirka - 250, 200, 200, 600], 0)
                     
                     
                     
             # -------- Na kameře -------- #
             else:
+                #Vykreslení záznamu kamery live WOWOWOWOWO
+                screen.blit(Ckamka[kamka], (0,0))
+                
+              #  if Br + jmpsc = 
+                
+                
                 if BoolPG:
                     #Phone Guy
                     screen.blit(ImgPG, (OknoSirka - 400, OknoVyska - 300))
@@ -337,6 +355,7 @@ while True:
                     if rect.colliderect(PG) and klik:
                         BoolPG = False
                     #1680
+                            
                 if (Vteriny - PrepMaediator) < 0.5:
                     screen.blit(KameStat, (0,0))
                 else:
@@ -344,6 +363,7 @@ while True:
                     for r in KmLt:
                         if rect.colliderect(r) and klik and BoolSWKamera == False and kamka != KmLt.index(r):
                             kamka = KmLt.index(r)
+                            #Ckamka = Ckamka + str(kamka)
                             PrepMaediator = Vteriny
                         elif kamka == KmLt.index(r):
                             pygame.draw.rect(screen, (140,140,140), r, 0)
@@ -395,6 +415,10 @@ while True:
                 if event.type == KEYDOWN: #Když držíme klávesu
                     if event.key == K_ESCAPE:
                         terminace()
+                    if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                        bald += 1
+                        jumpsc = balding.pohyb(bald, BoolRD)
+                        print(jumpsc)
                         
                         
             pygame.display.update()
