@@ -58,11 +58,11 @@ Ckamka1 = pygame.image.load('MainMenu/K1.png')
 Ckamka2 = pygame.image.load('MainMenu/K2.png')
 Ckamka3 = pygame.image.load('MainMenu/K3.png')
 Ckamka4 = pygame.image.load('MainMenu/G1.png')
-Ckamka5 = pygame.image.load('MainMenu/G1.png')
+Ckamka5 = pygame.image.load('MainMenu/K5.png')
 Ckamka6 = pygame.image.load('MainMenu/G1.png')
 Ckamka7 = pygame.image.load('MainMenu/G1.png')
 Ckamka8 = pygame.image.load('MainMenu/G1.png')
-Ckamka9 = pygame.image.load('MainMenu/G1.png')
+Ckamka9 = pygame.image.load('MainMenu/K9.png')
 Ckamka10 = pygame.image.load('MainMenu/G1.png')
 Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9,Ckamka10]
 
@@ -364,6 +364,7 @@ while True:
                         if rect.colliderect(r) and klik and BoolSWKamera == False and kamka != KmLt.index(r):
                             kamka = KmLt.index(r)
                             #Ckamka = Ckamka + str(kamka)
+                            print(kamka)
                             PrepMaediator = Vteriny
                         elif kamka == KmLt.index(r):
                             pygame.draw.rect(screen, (140,140,140), r, 0)
