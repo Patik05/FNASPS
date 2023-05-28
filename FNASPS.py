@@ -39,6 +39,10 @@ def textik(text, font, text_col, x,y):
     screen.blit(img, (x,y))
 
 Sn = pygame.image.load('MainMenu/real.png')
+Sl = pygame.image.load('MainMenu/SvL.png')
+Sr = pygame.image.load('MainMenu/SvR.png')
+Sdl = pygame.image.load('MainMenu/DdL.png')
+Sdr = pygame.image.load('MainMenu/DdR.png')
 St = pygame.image.load('MainMenu/static.png')
 St1 = pygame.image.load('MainMenu/static1.png')
 Sp = pygame.image.load('MainMenu/sipecka.png')
@@ -63,6 +67,12 @@ Ckamka7 = pygame.image.load('MainMenu/K7.png')
 Ckamka8 = pygame.image.load('MainMenu/K8.png')
 Ckamka9 = pygame.image.load('MainMenu/K9.png')
 Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9]
+
+bb = ["", "", "", "", "", 5, 6, 7, 8, ""]
+kk = [0, 1, 2, "", 4, 5, 6, "", "", ""]
+jj = ["", "", "", "", "", "", "", "", "", ""]
+ff = ["", "", "", "", "", "", "", "", "", ""]
+
 
 Br9 = pygame.image.load('MainMenu/pg.png')
 Br5 = pygame.image.load('MainMenu/pg.png')
@@ -247,7 +257,7 @@ while True:
         BoolPG = True
         klik = False
     
-        
+        jumpsc = 0
         BoolSWKamera = False
         #Logika rozmístění a přepínání kamer
         MPoz = OknoVyska - 540 #530
@@ -262,6 +272,9 @@ while True:
         Rano = 12
         #Procenta
         Proc = 100
+        odecet = 0.2
+        zdroj = 1
+        nace = 0
         #9 5 8 7 6
         balding = e.animatronik([9,5,8,7,6,0])
         bald = 0
@@ -273,6 +286,7 @@ while True:
                 Win = True
                 running = False
                 GameBool = False
+                
             rect = Rect(mx, my, 1, 1)
             mx, my = pygame.mouse.get_pos()
             screen.fill((0,0,0))
@@ -293,17 +307,22 @@ while True:
                 Minu += 1
             else:
                 xt = ""
-
+                
+            if nace < Vteriny:
+                Proc = round(Proc - odecet * zdroj, 1)
+                nace += 1
+            #Aby jsme nešli až moc daleko s power drainingem
+            zdroj = 1
             #Rect/hitboxy kamery (mimo kvůli vypínání a zapínání kamery
             KM = Rect(350, OknoVyska - 140, OknoSirka-700, 100)
             #KM = pygame.draw.rect(screen, (0,0,255), [350, OknoVyska - 100, OknoSirka-700, 100], 4)
             if not BoolKm:
                 screen.blit(OF, (dX - 210,0))
                 #Rect/hitboxy tlačítek
-                LL = pygame.draw.rect(screen, (255,0,0), [dX + 20, 400, 50, 70], 0)
-                LD = pygame.draw.rect(screen, (255,0,0), [dX + 20, 490, 50, 70], 0)
-                RL = pygame.draw.rect(screen, (255,0,0), [dX + OknoSirka - 20, 400, 50, 70], 0)
-                RD = pygame.draw.rect(screen, (255,0,0), [dX + OknoSirka - 20, 490, 50, 70], 0)
+                LD = Rect(dX + -76, 330, 100, 120)
+                LL = Rect(dX + -76, 480, 100, 120)
+                RD = Rect(dX + OknoSirka, 340, 90, 110)
+                RL = Rect(dX + OknoSirka, 490, 90, 100)
                 
                 #Rect/hitboxy otáčení
                 #LS = pygame.draw.rect(screen, (0,0,255), [0, 0, 200, OknoVyska], 4)
@@ -328,14 +347,19 @@ while True:
                         BoolRD = not BoolRD
                 
                 if BoolLL == True:
-                    SvetloL = pygame.draw.rect(screen, (255,255,255), [dX + 100, 200, 200, 600], 0)
+                    screen.blit(Sl, (dX - 52, 216))
+                    #SvetloL = pygame.draw.rect(screen, (255,255,255), [dX + 100, 200, 200, 600], 0)
+                    zdroj += 1
                 if BoolLD == True:
-                    DoorL = pygame.draw.rect(screen, (255,0,0), [dX + 100, 200, 200, 600], 0)
+                    screen.blit(Sdl, (dX - 52, 216))
+                    zdroj += 1
                 if BoolRL == True:
-                    SvetloR = pygame.draw.rect(screen, (255,255,255), [dX + OknoSirka - 250, 200, 200, 600], 0)
+                    screen.blit(Sr, (dX + OknoSirka - 416, 230))
+                    #SvetloR = pygame.draw.rect(screen, (255,255,255), [dX + OknoSirka - 250, 200, 200, 600], 0)
+                    zdroj += 1
                 if BoolRD == True:
-                    DoorR = pygame.draw.rect(screen, (255,0,0), [dX + OknoSirka - 250, 200, 200, 600], 0)
-                    
+                    screen.blit(Sdr, (dX + OknoSirka - 416, 230))
+                    zdroj += 1
                     
                     
             # -------- Na kameře -------- #
@@ -353,6 +377,12 @@ while True:
                     if rect.colliderect(PG) and klik:
                         BoolPG = False
                     #1680
+                
+                
+                
+                #################
+                #if jumpsc == kamka:
+                #    screen.blit(bb[jumpsc], (0,0))
                        
                 if (Vteriny - PrepMaediator) < 0.5:
                     screen.blit(KameStat, (0,0))
@@ -361,8 +391,8 @@ while True:
                     for r in KmLt:
                         if rect.colliderect(r) and klik and BoolSWKamera == False and kamka != KmLt.index(r):
                             kamka = KmLt.index(r)
-                            #Ckamka = Ckamka + str(kamka)
                             print(kamka)
+                            #Ckamka = Ckamka + str(kamka)
                             PrepMaediator = Vteriny
                         elif kamka == KmLt.index(r):
                             pygame.draw.rect(screen, (140,140,140), r, 0)
