@@ -46,7 +46,6 @@ Tx = pygame.image.load('MainMenu/text.png')
 KLKM = pygame.image.load('MainMenu/Spsmap.png')
 Ikonka = pygame.image.load('MainMenu/icon.png')
 ImgPG = pygame.image.load('MainMenu/pg.png')
-ImgPC = pygame.image.load('MainMenu/pcfr.png')
 
 Novi = pygame.image.load('MainMenu/noviny.png')
 Et = pygame.image.load('MainMenu/entr.png')
@@ -57,14 +56,13 @@ Ckamka0 = pygame.image.load('MainMenu/K0.png')
 Ckamka1 = pygame.image.load('MainMenu/K1.png')
 Ckamka2 = pygame.image.load('MainMenu/K2.png')
 Ckamka3 = pygame.image.load('MainMenu/K3.png')
-Ckamka4 = pygame.image.load('MainMenu/G1.png')
+Ckamka4 = pygame.image.load('MainMenu/K4.png')
 Ckamka5 = pygame.image.load('MainMenu/K5.png')
-Ckamka6 = pygame.image.load('MainMenu/G1.png')
-Ckamka7 = pygame.image.load('MainMenu/G1.png')
-Ckamka8 = pygame.image.load('MainMenu/G1.png')
+Ckamka6 = pygame.image.load('MainMenu/K6.png')
+Ckamka7 = pygame.image.load('MainMenu/K7.png')
+Ckamka8 = pygame.image.load('MainMenu/K8.png')
 Ckamka9 = pygame.image.load('MainMenu/K9.png')
-Ckamka10 = pygame.image.load('MainMenu/G1.png')
-Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9,Ckamka10]
+Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9]
 
 Br9 = pygame.image.load('MainMenu/pg.png')
 Br5 = pygame.image.load('MainMenu/pg.png')
@@ -253,7 +251,7 @@ while True:
         BoolSWKamera = False
         #Logika rozmístění a přepínání kamer
         MPoz = OknoVyska - 540 #530
-        xList = [(540,MPoz), "ŘE", (440,MPoz + 120), "SCHO", (160, MPoz + 140), "HW1B", (200,MPoz), "KAB", (540,MPoz + 80), "SEK1", (340,MPoz + 140), "HW1A", (80,MPoz + 280), "T17B", (210,MPoz +280), "T17A", (360,MPoz + 280), "T16", (410,MPoz + 370), "T15", (490, MPoz + 270), "SEK2"]#MainDoor MainHallway
+        xList = [(540,MPoz), "ŘE", (440,MPoz + 120), "SCHO", (160, MPoz + 140), "HW1B", (200,MPoz), "KAB", (540,MPoz + 80), "SEK1", (340,MPoz + 140), "HW1A", (80,MPoz + 280), "T17B", (360,MPoz + 280), "T16", (410,MPoz + 370), "T15", (490, MPoz + 270), "SEK2"]#MainDoor MainHallway
         KmLt, tett = KmFnce()
         kamka = 0
         strtVteriny = 0
@@ -344,9 +342,9 @@ while True:
             else:
                 #Vykreslení záznamu kamery live WOWOWOWOWO
                 screen.blit(Ckamka[kamka], (0,0))
-                
+                pygame.draw.rect(screen, (255,255,255), [40, 40, OknoSirka - 60, OknoVyska - 60], 2)
               #  if Br + jmpsc = 
-                
+                screen.blit(Sw, (0,0))
                 
                 if BoolPG:
                     #Phone Guy
@@ -355,7 +353,7 @@ while True:
                     if rect.colliderect(PG) and klik:
                         BoolPG = False
                     #1680
-                            
+                       
                 if (Vteriny - PrepMaediator) < 0.5:
                     screen.blit(KameStat, (0,0))
                 else:
@@ -385,8 +383,13 @@ while True:
                         if op == 2:
                             op = 0
                             textik(o, txKm, (255,255,255), l[0]+5, l[1]+8)
-                    
-                screen.blit(ImgPC, (0,kameY))
+
+                if Sw == St:
+                    jump_allowed = False
+                    Sw = St1
+                else:
+                    Sw = St
+
                 
             screen.blit(BtKm, (350, OknoVyska - 140))
             textik(str(Rano) + "AM", vetsi_text_font, (255,255,255), OknoSirka - 250, 40)
