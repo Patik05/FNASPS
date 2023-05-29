@@ -1,4 +1,4 @@
-import sys, pygame, os, random, time, math, anima as e
+import sys, pygame,anima as e
 from pygame import *
 
 def terminace():
@@ -9,8 +9,6 @@ def KmFnce():
     KmLt = []
     tett = []
     for t in xList:
-        #print(str(xList.index(t)))
-        #w = textik(str(xList.index(t)), mensi_text_font, (255,255,255), t, t)
         #Pro lokaci
         if xList.index(t) % 2 == 0:
             r = t
@@ -22,9 +20,6 @@ def KmFnce():
             r = t
             tett.append(r)
     return KmLt, tett
-
-def flip(img,boolean=True):
-    return pygame.transform.flip(img,boolean,False)
 
 hodiny = pygame.time.Clock()
 pygame.init()
@@ -68,17 +63,32 @@ Ckamka8 = pygame.image.load('MainMenu/K8.png')
 Ckamka9 = pygame.image.load('MainMenu/K9.png')
 Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9]
 
-bb = ["", "", "", "", "", 5, 6, 7, 8, ""]
-kk = [0, 1, 2, "", 4, 5, 6, "", "", ""]
+Br9 = pygame.image.load('MainMenu/hwBr.png')
+Br5 = pygame.image.load('MainMenu/hwBr.png')
+Br8 = pygame.image.load('MainMenu/hwBr.png')
+Br7 = pygame.image.load('MainMenu/hwBr.png')
+Br6 = pygame.image.load('MainMenu/hwBr.png')
+
+BrO = pygame.image.load('MainMenu/SvBr.png')
+HoO = pygame.image.load('MainMenu/SvHo.png')
+FiO = pygame.image.load('MainMenu/SvFi.png')
+#3 5 2
+#8 1 7 2
+#7 5 3 5 2 6
+bb = ["", "", "", "", "", Br5, Br6, Br7, Br8, ""]
+hh = ["", "", "", "", "", "", "", "", "", ""]
 jj = ["", "", "", "", "", "", "", "", "", ""]
 ff = ["", "", "", "", "", "", "", "", "", ""]
-
-
-Br9 = pygame.image.load('MainMenu/pg.png')
-Br5 = pygame.image.load('MainMenu/pg.png')
-Br8 = pygame.image.load('MainMenu/pg.png')
-Br7 = pygame.image.load('MainMenu/pg.png')
-Br6 = pygame.image.load('MainMenu/pg.png')
+balding = e.animatronik([9,5,8,7,6,20])
+ho = e.animatronik([7,5,3,5,2,6,20])
+fl = e.animatronik([8,1,7,2,20])
+bjump = 0
+hj = 0
+fj = 0
+jj = 0
+bald = 0
+fq = 0
+hq = 0
 
 BtKm = pygame.image.load('MainMenu/KmBt.png')
 #screen.blit(pygame.transform.scale(pic, (500, 500)), (0, 0))
@@ -94,7 +104,10 @@ pygame.display.set_icon(Ikonka)
 
 KameStat = pygame.image.load('MainMenu/static.gif')
 KameStat = pygame.transform.scale(KameStat, (OknoSirka, OknoVyska))
+Sn = pygame.transform.scale(Sn,  (810, 1000))
 
+
+kill = ""
 #Kolikátá noc
 PNoc = 0
 #Pro správné počítaní délky noci
@@ -107,6 +120,7 @@ IntermiseBool = False
 GameBool = False
 #Bude vráceno animatroniky
 GameOver = False
+Lose = False
 Win = False
 sipecky_X = 120
 sipecky_Y = 630
@@ -141,9 +155,6 @@ while True:
             else:
                 sipecky_Y = 648
             
-            #print(my)
-            #B1 = pygame.draw.rect(screen, (255,0,0), [130, 620, 500, 100], -1)
-            #B2 = pygame.draw.rect(screen, (255,0,0), [130, 730, 500, 100], -1)
             B1 = Rect(130, 620, 500, 100)
             B2 = Rect(130, 730, 500, 100)
             if B1.collidepoint((mx, my)):
@@ -177,7 +188,7 @@ while True:
                         else:
                             stage_sipecky = 0                       
             
-            screen.blit(Sn, (OknoSirka / 2,0))
+            screen.blit(Sn, (OknoSirka - 780,0))
             screen.blit(Sw, (0,0))
             screen.blit(Sq, (0,0))
             
@@ -195,7 +206,7 @@ while True:
             textik("V 0.01", text_font, (255,255,255), 60, OknoVyska - 100)
             textik("©️ Patron Service, Poland", text_font, (255,255,255), OknoSirka - 650, OknoVyska - 100)  
             pygame.display.update()
-            hodiny.tick(60)
+            hodiny.tick(40)
 
 
     # -------- Noviny na začítku hry -------- #
@@ -235,7 +246,7 @@ while True:
                             PNoc = 1
 
                 pygame.display.update()
-                hodiny.tick(60)
+                hodiny.tick(40)
         else:
             IntermiseBool = False
             GameBool = True 
@@ -257,7 +268,6 @@ while True:
         BoolPG = True
         klik = False
     
-        jumpsc = 0
         BoolSWKamera = False
         #Logika rozmístění a přepínání kamer
         MPoz = OknoVyska - 540 #530
@@ -276,16 +286,13 @@ while True:
         zdroj = 1
         nace = 0
         #9 5 8 7 6
-        balding = e.animatronik([9,5,8,7,6,0])
-        bald = 0
+
         #hugerCat = e.animatronik(11, 11, 8000,False,)
         #flaska = e.animatronik(  11, 11, 8000,False,)
         #zakar = e.animatronik(   11, 11, 8000,False,)
         while running:
             if GameOver:
-                Win = True
-                running = False
-                GameBool = False
+                terminace()
                 
             rect = Rect(mx, my, 1, 1)
             mx, my = pygame.mouse.get_pos()
@@ -308,16 +315,49 @@ while True:
             else:
                 xt = ""
                 
+            
+                
             if nace < Vteriny:
                 Proc = round(Proc - odecet * zdroj, 1)
                 nace += 1
+                bald += 1
+                hq += 1
+                fq += 1
+                bjump, bald = balding.pohyb(bald, BoolRD, bjump)
+                hj, hq = ho.pohyb(hq, BoolRD, hj)
+                fj, fq = fl.pohyb(fq, BoolLD, fj)
+                
             #Aby jsme nešli až moc daleko s power drainingem
             zdroj = 1
             #Rect/hitboxy kamery (mimo kvůli vypínání a zapínání kamery
             KM = Rect(350, OknoVyska - 140, OknoSirka-700, 100)
             #KM = pygame.draw.rect(screen, (0,0,255), [350, OknoVyska - 100, OknoSirka-700, 100], 4)
+            
+            if bjump > 90:
+                kill = "Brian"
+                Lose = True
+                running = False
+                GameBool = False
+            elif hj > 90:
+                kill = "Honza"
+                Lose = True
+                running = False
+                GameBool = False
+            elif fj > 90:
+                kill = "Filip"
+                Lose = True
+                running = False
+                GameBool = False
+            elif hj > 90:
+                kill = "Zakar"
+                Lose = True
+                running = False
+                GameBool = False
+            
+                
             if not BoolKm:
                 screen.blit(OF, (dX - 210,0))
+                                    
                 #Rect/hitboxy tlačítek
                 LD = Rect(dX + -76, 330, 100, 120)
                 LL = Rect(dX + -76, 480, 100, 120)
@@ -331,9 +371,9 @@ while True:
                 PS = Rect(OknoSirka - 200, 0, 200, OknoVyska)
             
                 if PS.collidepoint((mx, my)) and dX >= -200:
-                    dX -= 10
+                    dX -= 20
                 elif LS.collidepoint((mx, my)) and dX <= 200:
-                    dX += 10
+                    dX += 20
                     
                 #Dalo by se dát and místo více if, né když stačí ale ověřit jednu proměnnou
                 if klik:
@@ -348,27 +388,33 @@ while True:
                 
                 if BoolLL == True:
                     screen.blit(Sl, (dX - 52, 216))
-                    #SvetloL = pygame.draw.rect(screen, (255,255,255), [dX + 100, 200, 200, 600], 0)
-                    zdroj += 1
-                if BoolLD == True:
-                    screen.blit(Sdl, (dX - 52, 216))
-                    zdroj += 1
                 if BoolRL == True:
                     screen.blit(Sr, (dX + OknoSirka - 416, 230))
-                    #SvetloR = pygame.draw.rect(screen, (255,255,255), [dX + OknoSirka - 250, 200, 200, 600], 0)
-                    zdroj += 1
+
+                if bjump == 20 and BoolRL:
+                    screen.blit(BrO, (dX + OknoSirka - 416, 230))
+                if hj == 20 and BoolRL:
+                    screen.blit(HoO, (dX + OknoSirka - 416, 230))
+                if fj == 20 and BoolLL:
+                    screen.blit(FiO, (dX - 52, 216))
+                
+                
                 if BoolRD == True:
-                    screen.blit(Sdr, (dX + OknoSirka - 416, 230))
-                    zdroj += 1
-                    
-                    
+                    screen.blit(Sdr, (dX + OknoSirka - 416, 230)) 
+                if BoolLD == True:
+                    screen.blit(Sdl, (dX - 52, 216))
+
+    
             # -------- Na kameře -------- #
             else:
                 #Vykreslení záznamu kamery live WOWOWOWOWO
+                zdroj += 1
                 screen.blit(Ckamka[kamka], (0,0))
                 pygame.draw.rect(screen, (255,255,255), [40, 40, OknoSirka - 60, OknoVyska - 60], 2)
-              #  if Br + jmpsc = 
-                screen.blit(Sw, (0,0))
+                
+                
+                if bjump == kamka:
+                    screen.blit(bb[kamka], (OknoSirka / 2,OknoVyska / 2))
                 
                 if BoolPG:
                     #Phone Guy
@@ -378,11 +424,6 @@ while True:
                         BoolPG = False
                     #1680
                 
-                
-                
-                #################
-                #if jumpsc == kamka:
-                #    screen.blit(bb[jumpsc], (0,0))
                        
                 if (Vteriny - PrepMaediator) < 0.5:
                     screen.blit(KameStat, (0,0))
@@ -391,7 +432,7 @@ while True:
                     for r in KmLt:
                         if rect.colliderect(r) and klik and BoolSWKamera == False and kamka != KmLt.index(r):
                             kamka = KmLt.index(r)
-                            print(kamka)
+                            #print(kamka)
                             #Ckamka = Ckamka + str(kamka)
                             PrepMaediator = Vteriny
                         elif kamka == KmLt.index(r):
@@ -420,13 +461,21 @@ while True:
                 else:
                     Sw = St
 
-                
+        
+            if BoolRD == True:
+                zdroj += 1            
+            if BoolLD == True:
+                zdroj += 1
+            if BoolLL == True:
+                zdroj += 1            
+            if BoolRL == True:
+                zdroj += 1   
             screen.blit(BtKm, (350, OknoVyska - 140))
             textik(str(Rano) + "AM", vetsi_text_font, (255,255,255), OknoSirka - 250, 40)
             textik(str(Minu) + ":" + xt + str(strtVteriny), mensi_text_font, (200,200,200), OknoSirka - 140, 120)
             textik("Noc " + str(PNoc), text_font, (255,255,255), OknoSirka - 200, 160)
             textik("Energie:" + str(Proc) + "%", text_font, (255,255,255), 60, 60)  
-            textik("Využití: nemá lol", mensi_text_font, (255,255,255), 60, 120)
+            textik("Využití:" + str(zdroj), mensi_text_font, (255,255,255), 60, 120)
             
             # ------- Delay pro kameru -------- #
             if klik and (Vteriny - Mediator) > 0.4:
@@ -449,14 +498,10 @@ while True:
                 if event.type == KEYDOWN: #Když držíme klávesu
                     if event.key == K_ESCAPE:
                         terminace()
-                    if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                        bald += 1
-                        jumpsc = balding.pohyb(bald, BoolRD)
-                        print(jumpsc)
                         
                         
             pygame.display.update()
-            hodiny.tick(60)
+            hodiny.tick(40)
         
     # -------- Noviny na začítku hry -------- #
     if Win:
@@ -488,7 +533,27 @@ while True:
                         PNoc = 1
 
                 pygame.display.update()
-                hodiny.tick(60)
+                hodiny.tick(40)
+        else:
+            IntermiseBool = False
+            GameBool = True
+            
+    if Lose:
+        running = True
+        while running:
+            #Průhlednost
+            screen.fill((0,0,0))
+            textik("Zabil tebe " + kill + "!!!!", vetsi_text_font, (255,255,255), OknoSirka/2 - 400, OknoVyska /2)
+            textik("Esc to escape this", mensi_text_font, (255,255,255), OknoSirka/2 - 400, OknoVyska /2 + 200)
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    terminace()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        terminace()
+
+                pygame.display.update()
+                hodiny.tick(40)
         else:
             IntermiseBool = False
             GameBool = True 
