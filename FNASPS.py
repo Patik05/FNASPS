@@ -20,7 +20,6 @@ def KmFnce():
             r = t
             tett.append(r)
     return KmLt, tett
-
 hodiny = pygame.time.Clock()
 pygame.init()
 pygame.display.set_caption("FNASPS")
@@ -54,7 +53,7 @@ else:
 
     SrO = pygame.image.load('MainMenu/SvSe.png')
     ss = ["", "", "", "", "", Sr5, Sr6, Sr7, Sr8, ""]
-    
+LLLL = ""
 Sl = pygame.image.load('MainMenu/SvL.png')
 Sr = pygame.image.load('MainMenu/SvR.png')
 Sdl = pygame.image.load('MainMenu/DdL.png')
@@ -351,21 +350,25 @@ while True:
             #KM = pygame.draw.rect(screen, (0,0,255), [350, OknoVyska - 100, OknoSirka-700, 100], 4)
             
             if bjump > 90:
+                LLLL = BrO
                 kill = "Brian"
                 Lose = True
                 running = False
                 GameBool = False
             elif hj > 90:
+                LLLL = HoO
                 kill = "Honza"
                 Lose = True
                 running = False
                 GameBool = False
             elif fj > 90:
+                LLLL = FiO
                 kill = "Filip"
                 Lose = True
                 running = False
                 GameBool = False
             elif sj > 90:
+                LLLL = SrO
                 kill = "Snejkyr"
                 Lose = True
                 running = False
@@ -565,6 +568,7 @@ while True:
         while running:
             #Průhlednost
             screen.fill((0,0,0))
+            screen.blit(LLLL,(OknoSirka/2 - 300, 200))
             textik("Zabil tebe " + kill + "!!!!", vetsi_text_font, (255,255,255), OknoSirka/2 - 400, OknoVyska /2)
             textik("Esc to escape this", mensi_text_font, (255,255,255), OknoSirka/2 - 400, OknoVyska /2 + 200)
             for event in pygame.event.get():
