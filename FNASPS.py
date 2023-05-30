@@ -33,7 +33,28 @@ def textik(text, font, text_col, x,y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x,y))
 
-Sn = pygame.image.load('MainMenu/real.png')
+n = 0
+
+sq = 0
+sj = 0
+
+pp = False
+
+if n == 0:
+    Sn = pygame.image.load('MainMenu/real.png')
+else:
+    Sn = pygame.image.load('MainMenu/real1.png')
+    sk = e.animatronik([9,5,8,7,6,20])
+    pp = True
+    Sr9 = pygame.image.load('MainMenu/hwSe.png')
+    Sr5 = pygame.image.load('MainMenu/hwSe.png')
+    Sr8 = pygame.image.load('MainMenu/hwSe.png')
+    Sr7 = pygame.image.load('MainMenu/hwSe.png')
+    Sr6 = pygame.image.load('MainMenu/hwSe.png')
+
+    SrO = pygame.image.load('MainMenu/SvSe.png')
+    ss = ["", "", "", "", "", Sr5, Sr6, Sr7, Sr8, ""]
+    
 Sl = pygame.image.load('MainMenu/SvL.png')
 Sr = pygame.image.load('MainMenu/SvR.png')
 Sdl = pygame.image.load('MainMenu/DdL.png')
@@ -45,12 +66,9 @@ Tx = pygame.image.load('MainMenu/text.png')
 KLKM = pygame.image.load('MainMenu/Spsmap.png')
 Ikonka = pygame.image.load('MainMenu/icon.png')
 ImgPG = pygame.image.load('MainMenu/pg.png')
-
 Novi = pygame.image.load('MainMenu/noviny.png')
 Et = pygame.image.load('MainMenu/entr.png')
-
 OF = pygame.image.load('MainMenu/G1.png')
-
 Ckamka0 = pygame.image.load('MainMenu/K0.png')
 Ckamka1 = pygame.image.load('MainMenu/K1.png')
 Ckamka2 = pygame.image.load('MainMenu/K2.png')
@@ -62,19 +80,14 @@ Ckamka7 = pygame.image.load('MainMenu/K7.png')
 Ckamka8 = pygame.image.load('MainMenu/K8.png')
 Ckamka9 = pygame.image.load('MainMenu/K9.png')
 Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9]
-
 Br9 = pygame.image.load('MainMenu/hwBr.png')
 Br5 = pygame.image.load('MainMenu/hwBr.png')
 Br8 = pygame.image.load('MainMenu/hwBr.png')
 Br7 = pygame.image.load('MainMenu/hwBr.png')
 Br6 = pygame.image.load('MainMenu/hwBr.png')
-
 BrO = pygame.image.load('MainMenu/SvBr.png')
 HoO = pygame.image.load('MainMenu/SvHo.png')
 FiO = pygame.image.load('MainMenu/SvFi.png')
-#3 5 2
-#8 1 7 2
-#7 5 3 5 2 6
 bb = ["", "", "", "", "", Br5, Br6, Br7, Br8, ""]
 hh = ["", "", "", "", "", "", "", "", "", ""]
 jj = ["", "", "", "", "", "", "", "", "", ""]
@@ -323,10 +336,14 @@ while True:
                 bald += 1
                 hq += 1
                 fq += 1
+                sq += 1
+                
                 bjump, bald = balding.pohyb(bald, BoolRD, bjump)
                 hj, hq = ho.pohyb(hq, BoolRD, hj)
                 fj, fq = fl.pohyb(fq, BoolLD, fj)
-                
+                if n == 1:
+                    sj, sq = sk.pohyb(sq, BoolRD, sj)                    
+                                    
             #Aby jsme nešli až moc daleko s power drainingem
             zdroj = 1
             #Rect/hitboxy kamery (mimo kvůli vypínání a zapínání kamery
@@ -348,8 +365,8 @@ while True:
                 Lose = True
                 running = False
                 GameBool = False
-            elif hj > 90:
-                kill = "Zakar"
+            elif sj > 90:
+                kill = "Snejkyr"
                 Lose = True
                 running = False
                 GameBool = False
@@ -397,6 +414,8 @@ while True:
                     screen.blit(HoO, (dX + OknoSirka - 416, 230))
                 if fj == 20 and BoolLL:
                     screen.blit(FiO, (dX - 52, 216))
+                if sj == 20 and BoolLL:
+                    screen.blit(SrO, (dX + OknoSirka - 416, 216))
                 
                 
                 if BoolRD == True:
@@ -415,6 +434,9 @@ while True:
                 
                 if bjump == kamka:
                     screen.blit(bb[kamka], (OknoSirka / 2,OknoVyska / 2))
+                    
+                if sj == kamka:
+                    screen.blit(ss[kamka], (OknoSirka / 2,OknoVyska / 2))
                 
                 if BoolPG:
                     #Phone Guy
