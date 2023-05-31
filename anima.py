@@ -7,14 +7,18 @@ class animatronik(object):
         self.cesta = c
         self.pozice = self.cesta[0]
         self.start_pozice = 1
-    def pohyb(self, pozica, NemuzeDovnitr, bjump):
+        
+    def pohyb(self, pozica, NemuzeDovnitr, bjump, agrese):
         bald = pozica
-        aaaa = random.choice([0, 1])
-        bbbb = random.choice([0, 1])
+        
+        listpyco = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        bbbb = random.choice(listpyco)
+        
         if pozica + 1 <= len(self.cesta):
-            if aaaa == 0:
-                if bbbb == 0:
-                    pozica = self.cesta[pozica]
+            #Šance na pohnutí se váže na agresi
+            if bbbb < agrese:
+                pozica = self.cesta[pozica]
             else:
                 bald -= 1
                 pozica = self.cesta[pozica]

@@ -5,6 +5,15 @@ def terminace():
     pygame.quit()
     sys.exit()
 
+def audio(p, bo):
+    pygame.mixer.init()
+    pygame.mixer.music.load(p)
+    pygame.mixer.music.set_volume(0.8)
+    pygame.mixer.music.play()
+    pygame.mixer.music.unpause()
+    bo = False
+    return bo
+
 def KmFnce():
     KmLt = []
     tett = []
@@ -32,7 +41,7 @@ def textik(text, font, text_col, x,y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x,y))
 
-n = 0
+n = 1
 
 sq = 0
 sj = 0
@@ -45,15 +54,13 @@ else:
     Sn = pygame.image.load('MainMenu/real1.png')
     sk = e.animatronik([9,5,8,7,6,20])
     pp = True
-    Sr9 = pygame.image.load('MainMenu/hwSe.png')
-    Sr5 = pygame.image.load('MainMenu/hwSe.png')
-    Sr8 = pygame.image.load('MainMenu/hwSe.png')
-    Sr7 = pygame.image.load('MainMenu/hwSe.png')
-    Sr6 = pygame.image.load('MainMenu/hwSe.png')
-
+    Ses = pygame.image.load('MainMenu/hwSe.png')
     SrO = pygame.image.load('MainMenu/SvSe.png')
-    ss = ["", "", "", "", "", Sr5, Sr6, Sr7, Sr8, ""]
+    #ss = ["", "", "", "", "", Sr5, Sr6, Sr7, Sr8, ""]
 LLLL = ""
+
+AuBox = "MuBo.mp3"
+POOP = pygame.image.load('MainMenu/kl.png')
 Sl = pygame.image.load('MainMenu/SvL.png')
 Sr = pygame.image.load('MainMenu/SvR.png')
 Sdl = pygame.image.load('MainMenu/DdL.png')
@@ -79,15 +86,12 @@ Ckamka7 = pygame.image.load('MainMenu/K7.png')
 Ckamka8 = pygame.image.load('MainMenu/K8.png')
 Ckamka9 = pygame.image.load('MainMenu/K9.png')
 Ckamka = [Ckamka0,Ckamka1,Ckamka2,Ckamka3,Ckamka4,Ckamka5,Ckamka6,Ckamka7,Ckamka8,Ckamka9]
-Br9 = pygame.image.load('MainMenu/hwBr.png')
-Br5 = pygame.image.load('MainMenu/hwBr.png')
-Br8 = pygame.image.load('MainMenu/hwBr.png')
-Br7 = pygame.image.load('MainMenu/hwBr.png')
-Br6 = pygame.image.load('MainMenu/hwBr.png')
+
+Brs = pygame.image.load('MainMenu/hwBr.png')
 BrO = pygame.image.load('MainMenu/SvBr.png')
 HoO = pygame.image.load('MainMenu/SvHo.png')
 FiO = pygame.image.load('MainMenu/SvFi.png')
-bb = ["", "", "", "", "", Br5, Br6, Br7, Br8, ""]
+#bb = ["", "", "", "", "", Br5, Br6, Br7, Br8, ""]
 hh = ["", "", "", "", "", "", "", "", "", ""]
 jj = ["", "", "", "", "", "", "", "", "", ""]
 ff = ["", "", "", "", "", "", "", "", "", ""]
@@ -114,27 +118,23 @@ display = pygame.Surface((300,200))
 
 pygame.display.set_icon(Ikonka)
 
-KameStat = pygame.image.load('MainMenu/static.gif')
+KameStat = pygame.image.load('MainMenu/stat.png')
 KameStat = pygame.transform.scale(KameStat, (OknoSirka, OknoVyska))
 Sn = pygame.transform.scale(Sn,  (810, 1000))
-
 
 kill = ""
 #Kolikátá noc
 PNoc = 0
-#Pro správné počítaní délky noci
+#Pro správné počítaní času
 rozdil = 0
 
 nahoru = False
 dolu = False
 MenuBool = True
 IntermiseBool = False
-GameBool = False
-#Bude vráceno animatroniky
-GameOver = False
 Lose = False
 Win = False
-sipecky_X = 120
+
 sipecky_Y = 630
 
 # -------Main Game------- #
@@ -212,7 +212,7 @@ while True:
                 Sw = St
 
             screen.blit(Tx, (220, 150))
-            screen.blit(Sp, (sipecky_X,sipecky_Y))
+            screen.blit(Sp, (120,sipecky_Y))
             #screen.blit(Tx1, (20, OknoVyska - 100))
             #screen.blit(Tx2, (OknoSirka - 350, OknoVyska - 100))
             textik("V 0.01", text_font, (255,255,255), 60, OknoVyska - 100)
@@ -266,7 +266,6 @@ while True:
     # -------- Hlavní traktor --------- #
     if GameBool:
         rozdil = pygame.time.get_ticks() / 1000
-        #Mění se
         xt = "0"
         dX = -100
         #Kamera delay
@@ -279,7 +278,7 @@ while True:
         BoolRD = False
         BoolPG = True
         klik = False
-    
+        k = ""
         BoolSWKamera = False
         #Logika rozmístění a přepínání kamer
         MPoz = OknoVyska - 540 #530
@@ -297,22 +296,43 @@ while True:
         odecet = 0.2
         zdroj = 1
         nace = 0
-        #9 5 8 7 6
-
-        #hugerCat = e.animatronik(11, 11, 8000,False,)
-        #flaska = e.animatronik(  11, 11, 8000,False,)
-        #zakar = e.animatronik(   11, 11, 8000,False,)
+        naze = 0
+        nape = 0
+        
+        xxxx = 300
+        deme = False
+        keke = False
+        cunter = 0     
         while running:
-            if GameOver:
-                terminace()
-                
+
             rect = Rect(mx, my, 1, 1)
             mx, my = pygame.mouse.get_pos()
             screen.fill((0,0,0))
             Vteriny = round((pygame.time.get_ticks() / 1000) - rozdil)
+            Minivteriny = round((pygame.time.get_ticks() / 100 - rozdil / 100))
             strtVteriny = Vteriny - 60 * Minu
-            
             Rano = Vteriny // 45
+            
+            
+            klik = False
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    terminace()
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        klik = True
+                if event.type == KEYDOWN: #Když držíme klávesu
+                    if event.key == K_ESCAPE:
+                        terminace()
+                if pygame.mouse.get_pressed()[0]:
+                    try:
+                        keke = True
+                    except AttributeError:
+                        pass
+                else:
+                    keke = False  
+            
+            
             if Rano < 1:
                 Rano = 12
             elif Rano >= 6:
@@ -321,27 +341,31 @@ while True:
                 GameBool = False
 
             if strtVteriny < 10:
-                xt = "0"
+                strtVteriny = "0"+str(strtVteriny)
             elif strtVteriny >= 60:
                 Minu += 1
-            else:
-                xt = ""
-                
-            
-                
-            if nace < Vteriny:
-                Proc = round(Proc - odecet * zdroj, 1)
-                nace += 1
+        
+            if naze + 4 < Vteriny:
+                #POHYB ŠEL INTEGROVAT DO ANIMATRONIKŮ (self.pohybCislo), ALE NECHCI TO UŽ MĚNIT
+                naze += 4
                 bald += 1
                 hq += 1
                 fq += 1
                 sq += 1
-                
-                bjump, bald = balding.pohyb(bald, BoolRD, bjump)
-                hj, hq = ho.pohyb(hq, BoolRD, hj)
-                fj, fq = fl.pohyb(fq, BoolLD, fj)
+                #Average agrese
+                bjump, bald = balding.pohyb(bald, BoolRD, bjump, 5)
+                #Menší agrese
+                hj, hq = ho.pohyb(hq, BoolRD, hj, 3)
+                #Vyšší agrese
+                fj, fq = fl.pohyb(fq, BoolLD, fj, 7)
                 if n == 1:
-                    sj, sq = sk.pohyb(sq, BoolRD, sj)                    
+                    #Agrese (90% na pohyb)
+                    sj, sq = sk.pohyb(sq, BoolRD, sj, 9)  
+                
+                
+            if nace < Vteriny:
+                Proc = round(Proc - odecet * zdroj, 1)
+                nace += 1                  
                                     
             #Aby jsme nešli až moc daleko s power drainingem
             zdroj = 1
@@ -349,6 +373,8 @@ while True:
             KM = Rect(350, OknoVyska - 140, OknoSirka-700, 100)
             #KM = pygame.draw.rect(screen, (0,0,255), [350, OknoVyska - 100, OknoSirka-700, 100], 4)
             
+            
+            #ONO BY TO ŠLO UDĚLAT NA GLOBÁLNÍ PROMĚNOU, ALE NECHCE SE MI
             if bjump > 90:
                 LLLL = BrO
                 kill = "Brian"
@@ -373,8 +399,20 @@ while True:
                 Lose = True
                 running = False
                 GameBool = False
+            elif xxxx < 0:
+                LLLL = POOP
+                kill = "Casovy limit music boxu smrade"
+                Lose = True
+                running = False
+                GameBool = False                
             
-                
+            if not keke:
+                if Vteriny % 4 == 0 and not deme:
+                    xxxx -= 20
+                    deme = True
+                elif Vteriny % 4 != 0:
+                    deme =  False        
+                      
             if not BoolKm:
                 screen.blit(OF, (dX - 210,0))
                                     
@@ -396,7 +434,7 @@ while True:
                     dX += 20
                     
                 #Dalo by se dát and místo více if, né když stačí ale ověřit jednu proměnnou
-                if klik:
+                if klik and Proc > 0:
                     if LL.collidepoint((mx, my)):
                         BoolLL = not BoolLL
                     elif RL.collidepoint((mx, my)):
@@ -405,6 +443,12 @@ while True:
                         BoolLD = not BoolLD
                     elif RD.collidepoint((mx,my)):
                         BoolRD = not BoolRD
+                
+                if Proc < 0:
+                    BoolLL = False
+                    BoolRL = False
+                    BoolLD = False
+                    BoolRD = False
                 
                 if BoolLL == True:
                     screen.blit(Sl, (dX - 52, 216))
@@ -417,7 +461,7 @@ while True:
                     screen.blit(HoO, (dX + OknoSirka - 416, 230))
                 if fj == 20 and BoolLL:
                     screen.blit(FiO, (dX - 52, 216))
-                if sj == 20 and BoolLL:
+                if sj == 20 and BoolRL:
                     screen.blit(SrO, (dX + OknoSirka - 416, 216))
                 
                 
@@ -426,7 +470,7 @@ while True:
                 if BoolLD == True:
                     screen.blit(Sdl, (dX - 52, 216))
 
-    
+                pygame.mixer.music.pause()
             # -------- Na kameře -------- #
             else:
                 #Vykreslení záznamu kamery live WOWOWOWOWO
@@ -434,12 +478,12 @@ while True:
                 screen.blit(Ckamka[kamka], (0,0))
                 pygame.draw.rect(screen, (255,255,255), [40, 40, OknoSirka - 60, OknoVyska - 60], 2)
                 
-                
                 if bjump == kamka:
-                    screen.blit(bb[kamka], (OknoSirka / 2,OknoVyska / 2))
+                    screen.blit(Brs, (OknoSirka / 2,OknoVyska / 2))
                     
                 if sj == kamka:
-                    screen.blit(ss[kamka], (OknoSirka / 2,OknoVyska / 2))
+                    screen.blit(Ses, (OknoSirka / 2- 400,OknoVyska / 2 - 200))
+                    #screen.blit(ss[kamka], (OknoSirka / 2,OknoVyska / 2))
                 
                 if BoolPG:
                     #Phone Guy
@@ -447,9 +491,7 @@ while True:
                     PG = Rect([1460, 820, 70, 60])
                     if rect.colliderect(PG) and klik:
                         BoolPG = False
-                    #1680
                 
-                       
                 if (Vteriny - PrepMaediator) < 0.5:
                     screen.blit(KameStat, (0,0))
                 else:
@@ -464,7 +506,6 @@ while True:
                             pygame.draw.rect(screen, (140,140,140), r, 0)
                             pygame.draw.rect(screen, (150,200,255), r, 5)
                         else:
-                            #pygame.draw.rect(screen, (20,20,20), r, 0)
                             pygame.draw.rect(screen, (10,10,10), r, 0)
                             pygame.draw.rect(screen, (150,200,255), r, 5)
                     
@@ -480,13 +521,33 @@ while True:
                             op = 0
                             textik(o, txKm, (255,255,255), l[0]+5, l[1]+8)
 
+                #Epilepsie kamer
                 if Sw == St:
                     jump_allowed = False
                     Sw = St1
                 else:
                     Sw = St
 
-        
+                if kamka == 4:
+                    if nape + 25 < Vteriny:
+                        k = ""
+                    if k == "":
+                        k = audio(AuBox, k)
+                        nape = Vteriny
+                    else:
+                        pygame.mixer.music.unpause()
+                    pygame.draw.rect(screen, (0,0,0), [100, MPoz - 200, 320, 120], 0)
+                    textik("Music box", text_font, (255,255,255), 110, MPoz - 190)
+                    pygame.draw.rect(screen, (0,0,0), [100, MPoz - 130, 320, 120], 0)
+                    sssss = pygame.draw.rect(screen, (100,100,100), [110, MPoz - 120, 300, 100], 0)
+                    sussy = pygame.draw.rect(screen, (255,255,255), [110, MPoz - 120, xxxx, 100], 0)
+
+                    if (rect.colliderect(sssss) or rect.colliderect(sussy)) and keke and xxxx < 300 and Minivteriny >= cunter + 10:
+                        cunter = Minivteriny
+                        xxxx += 20
+                else:
+                    pygame.mixer.music.pause()
+                            
             if BoolRD == True:
                 zdroj += 1            
             if BoolLD == True:
@@ -497,10 +558,17 @@ while True:
                 zdroj += 1   
             screen.blit(BtKm, (350, OknoVyska - 140))
             textik(str(Rano) + "AM", vetsi_text_font, (255,255,255), OknoSirka - 250, 40)
-            textik(str(Minu) + ":" + xt + str(strtVteriny), mensi_text_font, (200,200,200), OknoSirka - 140, 120)
+            textik(str(Minu) + ":" + str(strtVteriny), mensi_text_font, (200,200,200), OknoSirka - 140, 120)
             textik("Noc " + str(PNoc), text_font, (255,255,255), OknoSirka - 200, 160)
             textik("Energie:" + str(Proc) + "%", text_font, (255,255,255), 60, 60)  
             textik("Využití:" + str(zdroj), mensi_text_font, (255,255,255), 60, 120)
+            
+            if xxxx <= 120 and xxxx > 60:
+                pygame.draw.rect(screen, (255,255,0), [OknoSirka - 320, OknoVyska - 140, 200, 100],0)
+                textik("Music box!", mensi_text_font, (0,0,0), OknoSirka - 300, OknoVyska - 120)
+            elif xxxx <= 60:
+                pygame.draw.rect(screen, (255,0,0), [OknoSirka - 320, OknoVyska - 140, 200, 100],0)
+                textik("Music box!!!!", mensi_text_font, (255,255,255), OknoSirka - 300, OknoVyska - 120)
             
             # ------- Delay pro kameru -------- #
             if klik and (Vteriny - Mediator) > 0.4:
@@ -512,19 +580,8 @@ while True:
                         BoolKm = True
                     else:
                         Mediator = Vteriny
-                        BoolKm = False
-            klik = False
-            for event in pygame.event.get():
-                if event.type == QUIT:
-                    terminace()
-                if event.type == MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        klik = True
-                if event.type == KEYDOWN: #Když držíme klávesu
-                    if event.key == K_ESCAPE:
-                        terminace()
-                        
-                        
+                        BoolKm = False  
+                                
             pygame.display.update()
             hodiny.tick(40)
         
@@ -536,7 +593,7 @@ while True:
         while running:
             #Průhlednost
             screen.fill((0,0,0))
-            textik("6 AM!!!!!!!!!!!!!!!", vetsi_text_font, (255,255,255), OknoSirka/2 - 200, OknoVyska /2)
+            textik("6 AM!Yayayayaya!!!!!!", vetsi_text_font, (255,255,255), OknoSirka/2 - 200, OknoVyska /2)
             if klik:
                 GameBool = True
                 Win = False
