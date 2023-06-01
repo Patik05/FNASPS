@@ -377,25 +377,25 @@ while True:
             #ONO BY TO ŠLO UDĚLAT NA GLOBÁLNÍ PROMĚNOU, ALE NECHCE SE MI
             if bjump > 90:
                 LLLL = BrO
-                kill = "Brian"
+                kill = "Balding"
                 Lose = True
                 running = False
                 GameBool = False
             elif hj > 90:
                 LLLL = HoO
-                kill = "Honza"
+                kill = "H-man"
                 Lose = True
                 running = False
                 GameBool = False
             elif fj > 90:
                 LLLL = FiO
-                kill = "Filip"
+                kill = "Flaška"
                 Lose = True
                 running = False
                 GameBool = False
             elif sj > 90:
                 LLLL = SrO
-                kill = "Snejkyr"
+                kill = "Senyr"
                 Lose = True
                 running = False
                 GameBool = False
